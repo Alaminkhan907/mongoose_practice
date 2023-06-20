@@ -115,7 +115,7 @@ step4: database query
       contractNo: "2389238",
       emergencyContractNo: "999",
       presentAddress: "bari nai",
-      permanentAddress: "goridsfb",
+      permanentAddress: "goridsfgb",
     });
     await user.save();
     console.log(user);
