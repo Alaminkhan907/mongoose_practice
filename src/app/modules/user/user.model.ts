@@ -1,10 +1,12 @@
-import { Schema, model } from "mongoose";
-import { IUser } from "./user.interface";
+import mongoose, { Schema, model, Model } from "mongoose";
+import { IUser, IUserMethods, UserModel } from "./user.interface";
 
-const userSchema = new Schema<IUser>({
+// type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
   id: {
-    type: Number,
-    require: true,
+    type: String,
+    required: true,
     unique: true,
   },
   role: {
@@ -15,6 +17,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
+
   name: {
     firstName: {
       type: String,
@@ -38,12 +41,11 @@ const userSchema = new Schema<IUser>({
   email: {
     type: String,
   },
-  contractNo: {
+  contactNo: {
     type: String,
     required: true,
   },
-
-  emergencyContractNo: {
+  emergencyContactNo: {
     type: String,
     required: true,
   },
@@ -56,5 +58,21 @@ const userSchema = new Schema<IUser>({
     required: true,
   },
 });
-const User = model<IUser>("User", userSchema);
+
+// class -> this.  --> classs
+userSchema.static("getAdminUsers", async function getAdminUsers() {
+  const admins = await this.find({ role: "admin" });
+  console.log(admins);
+  return admins;
+});
+
+userSchema.method("fullName", function fullName() {
+  return this.name.firstName + " " + this.name.lastName;
+});
+
+const User = model<IUser, UserModel>("User", userSchema);
+
 export default User;
+
+// instance methods --> instance er methods
+// class -> instance + methods -> instance methods
